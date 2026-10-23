@@ -1,0 +1,13 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite it as below."
+title: "perception-reliability-monitor"
+type: software
+version: 0.1.0
+license: MIT
+authors:
+  - alias: "soheylfalahzade"
+repository-code: "https://github.com/soheylfalahzade/perception-reliability-monitor"
+keywords:
+  - intelligent transportation systems
+  - reliability monitoring
+  - adverse weather

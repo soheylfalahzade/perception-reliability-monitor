@@ -1,0 +1,36 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "perception-reliability-monitor"
+version = "0.1.0"
+description = "Ground-truth-free reliability monitoring and graceful degradation for camera-based traffic perception"
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "MIT" }
+authors = [{ name = "soheylfalahzade" }]
+keywords = ["intelligent-transportation-systems", "reliability", "adverse-weather", "traffic-signal-control", "computer-vision"]
+dependencies = ["numpy>=1.24", "scipy>=1.10", "pandas>=2.0", "matplotlib>=3.7"]
+
+[project.optional-dependencies]
+sumo = ["eclipse-sumo", "traci"]
+dev = ["pytest>=7.4", "ruff>=0.4"]
+
+[project.scripts]
+relmon-eval = "relmon.evaluate:main"
+relmon-sumo = "relmon.sumo_control:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q"
+
+[tool.ruff]
+line-length = 100
+target-version = "py310"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "B", "UP", "N", "W"]
