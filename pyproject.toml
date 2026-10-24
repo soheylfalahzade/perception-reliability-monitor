@@ -15,14 +15,18 @@ dependencies = ["numpy>=1.24", "scipy>=1.10", "pandas>=2.0", "matplotlib>=3.7"]
 
 [project.optional-dependencies]
 sumo = ["eclipse-sumo", "traci"]
-dev = ["pytest>=7.4", "ruff>=0.4"]
+dev = ["pytest>=7.4", "pytest-cov>=4.1", "ruff>=0.4", "mypy>=1.8"]
 
 [project.scripts]
 relmon-eval = "relmon.evaluate:main"
 relmon-sumo = "relmon.sumo_control:main"
+relmon-gif = "relmon.viz:main"
 
 [tool.setuptools.packages.find]
 where = ["src"]
+
+[tool.setuptools.package-data]
+relmon = ["py.typed"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
@@ -34,3 +38,9 @@ target-version = "py310"
 
 [tool.ruff.lint]
 select = ["E", "F", "I", "B", "UP", "N", "W"]
+
+[tool.mypy]
+python_version = "3.10"
+ignore_missing_imports = true
+warn_unused_ignores = true
+warn_redundant_casts = true

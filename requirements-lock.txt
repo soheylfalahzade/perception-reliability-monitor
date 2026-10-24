@@ -1,0 +1,13 @@
+# Versions used to produce the reported results (Python 3.12, Ubuntu).
+numpy==2.4.4
+pandas==3.0.2
+matplotlib==3.10.8
+PyYAML==6.0.3
+pillow==12.1.1
+pytest==9.1.1
+pytest-cov
+scipy==1.17.1
+ruff==0.17.1
+mypy==2.4.0
+eclipse-sumo==1.28.0
+traci==1.28.0
