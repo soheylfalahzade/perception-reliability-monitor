@@ -10,6 +10,17 @@ signals into a calibrated reliability score `r(t)` in [0, 1] and a three-state m
 DEGRADED, FALLBACK) with hysteresis, so that a controller can switch to a fixed-time plan when the
 camera cannot be trusted.
 
+[![ci](https://github.com/soheylfalahzade/perception-reliability-monitor/actions/workflows/ci.yml/badge.svg)](https://github.com/soheylfalahzade/perception-reliability-monitor/actions)
+![python](https://img.shields.io/badge/python-3.10%20|%203.11%20|%203.12-blue)
+![license](https://img.shields.io/badge/license-MIT-green)
+![typing](https://img.shields.io/badge/mypy-checked-blue)
+
+<p align="center"><img src="docs/assets/pipeline.svg" alt="pipeline animation" width="100%"></p>
+
+<p align="center"><img src="docs/assets/monitor.gif" alt="data-driven animation" width="90%"></p>
+
+<sub>Animation: a stream that starts clear, enters rain (dashed lines) and returns to clear. Left: the degraded frame with ground-truth (green) and detected (red, dashed) boxes. Right: reliability r(t) with mode shading. The first seconds show the warm-up of the health windows. Regenerate with `relmon-gif`.</sub>
+
 ```mermaid
 flowchart LR
     A[Frame] --> B[Quality features<br/>brightness, contrast, sharpness,<br/>noise, saturation, obstruction]
@@ -151,6 +162,32 @@ to hurt this controller, and the blackout noise leaves false detections, so coun
 to zero. The monitor detects the failures (see above); this experiment does not show that detecting
 them improves control. Controllers that depend on absolute counts, on per-approach capacity, or on
 detector-triggered actuation would be more exposed; testing them is future work.
+
+## Claims and evidence
+
+| claim | evidence | file |
+|---|---|---|
+| Image quality and detector health jointly predict reliability | AUC 0.938 (combined) vs 0.873 (quality) and 0.901 (health); ECE 0.049 | `docs/results/eval_results.json` |
+| The monitor reacts when the detector fails | FALLBACK within 3-8 s for rain, glare and outage; stays NORMAL for night and mild fog | `docs/results/eval_results.json` |
+| The monitor limits false fallbacks | **partially supported**: 0-0.17 of clear frames, up to 0.34 after an outage | `docs/results/eval_results.json` |
+| Monitoring improves closed-loop control | **not supported**: blind control is within 0.3 s of oracle; fallback costs about 5.7 s | `docs/results/sumo_summary.json` |
+
+## Threats to validity
+
+- *Construct*: images are synthetic and the reference detector is a simple classical method; deep detectors fail differently.
+- *Internal*: the reliable label depends on a relative threshold (0.6 x clear recall); monitor thresholds and dwell times were not tuned.
+- *External*: one scene geometry; closed-loop camera behaviour resamples measured frame statistics independently in time.
+- *Statistical*: 6 test seeds for frame-level metrics and 4 for the closed loop; no intervals are reported for the mode statistics.
+
+## Data and code availability
+
+All code, configuration, seeds and result files behind the figures and tables are in this repository.
+No external datasets are used. Formal definitions: [`docs/METHODS.md`](docs/METHODS.md); exact
+commands, seeds and runtimes: [`docs/REPRODUCIBILITY.md`](docs/REPRODUCIBILITY.md).
+
+## Citation
+
+See [`CITATION.cff`](CITATION.cff).
 
 ## Limitations and scope
 
