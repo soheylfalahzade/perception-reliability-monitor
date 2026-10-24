@@ -78,7 +78,8 @@ def run_clip(rig: Rig, condition: str, severity: float, seed: int, n_frames: int
         ng.append(n_g)
         tps.append(tp)
     tp_a, ng_a = np.array(tps), np.array(ng)
-    win_tp, win_gt = deque(maxlen=window), deque(maxlen=window)
+    win_tp: deque[int] = deque(maxlen=window)
+    win_gt: deque[int] = deque(maxlen=window)
     rec = []
     for a, b in zip(tp_a, ng_a, strict=True):
         win_tp.append(a)
@@ -110,7 +111,9 @@ def run_sequence(rig: Rig, segments: list[tuple[str, float, int]], seed: int,
         nd.append(n_d)
         ng.append(n_g)
         tps.append(tp)
-    win_tp, win_gt, rec = deque(maxlen=window), deque(maxlen=window), []
+    win_tp: deque[int] = deque(maxlen=window)
+    win_gt: deque[int] = deque(maxlen=window)
+    rec = []
     for a, b in zip(tps, ng, strict=True):
         win_tp.append(a)
         win_gt.append(b)

@@ -37,6 +37,7 @@ class Degrader:
     def apply(self, img: np.ndarray, light: np.ndarray, condition: str, s: float) -> np.ndarray:
         """Return a degraded uint8 image. ``s`` = 0 leaves the image unchanged."""
         x = img.astype(np.float32)
+        out: np.ndarray
         h, w = x.shape[:2]
         if condition == "clear" or s <= 0:
             out = x

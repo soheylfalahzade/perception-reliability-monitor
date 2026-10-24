@@ -4,6 +4,7 @@ from __future__ import annotations
 import argparse
 import json
 from pathlib import Path
+from typing import Any
 
 import numpy as np
 
@@ -88,7 +89,7 @@ def main(argv: list[str] | None = None) -> int:
         report[name] = {"auc": auc(p, yt), "ece": ece(p, yt), "cols": cols}
     m = models["combined"]
     p = np.array([m.predict(r) for r in xt])
-    per_cond = {}
+    per_cond: dict[str, dict[str, Any]] = {}
     for cond in CONDITIONS:
         idx = np.array([c == cond for c, _ in meta])
         if idx.any() and 0 < yt[idx].mean() < 1:

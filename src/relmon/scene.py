@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
+from typing import cast
 
 import numpy as np
 
@@ -87,9 +88,10 @@ def spawn_traffic(rng: np.random.Generator, n_steps: int, density: float = 0.06)
         if rng.random() < density:
             lane = int(rng.integers(3))
             if all(abs(v.y - 62.0) > 14 for v in vehicles if v.lane == lane):
-                col = tuple(int(c) for c in rng.integers(30, 235, 3))
+                col = cast(tuple[int, int, int], tuple(int(c) for c in rng.integers(30, 235, 3)))
                 while abs(0.114 * col[0] + 0.587 * col[1] + 0.299 * col[2] - 99) < 50:
-                    col = tuple(int(c) for c in rng.integers(30, 235, 3))
+                    col = cast(tuple[int, int, int],
+                               tuple(int(c) for c in rng.integers(30, 235, 3)))
                 vehicles.append(Vehicle(lane, 62.0, float(rng.uniform(0.6, 1.4)), col,
                                         "truck" if rng.random() < 0.2 else "car"))
         for v in vehicles:

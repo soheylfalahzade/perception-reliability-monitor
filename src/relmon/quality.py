@@ -68,6 +68,7 @@ class QualityExtractor:
         g = to_gray(img)
         r = self._raw(g)
         cur = _block_gradient(g, self.grid)
+        assert self._map is not None
         self._map = (1 - self.ema) * self._map + self.ema * cur
         obstruction = float(np.mean(self._map / self.base_map < 0.85))
         b = self.base
