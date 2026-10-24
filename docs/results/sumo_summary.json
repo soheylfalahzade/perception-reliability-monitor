@@ -1,0 +1,97 @@
+{
+ "mean_travel_s": {
+  "blackout": {
+   "fixed": 63.32,
+   "oracle": 57.62,
+   "blind": 57.68,
+   "monitor": 63.32
+  },
+  "blackout_W_only": {
+   "fixed": 63.32,
+   "oracle": 57.62,
+   "blind": 57.7,
+   "monitor": 63.32
+  },
+  "clear": {
+   "fixed": 63.32,
+   "oracle": 57.62,
+   "blind": 57.62,
+   "monitor": 57.62
+  },
+  "dirt": {
+   "fixed": 63.32,
+   "oracle": 57.62,
+   "blind": 57.62,
+   "monitor": 59.24
+  },
+  "dirt_W_only": {
+   "fixed": 63.32,
+   "oracle": 57.62,
+   "blind": 57.62,
+   "monitor": 58.31
+  },
+  "fog": {
+   "fixed": 63.32,
+   "oracle": 57.62,
+   "blind": 57.6,
+   "monitor": 57.6
+  },
+  "glare": {
+   "fixed": 63.32,
+   "oracle": 57.62,
+   "blind": 57.77,
+   "monitor": 63.32
+  },
+  "glare_W_only": {
+   "fixed": 63.32,
+   "oracle": 57.62,
+   "blind": 57.61,
+   "monitor": 63.32
+  },
+  "intermittent_rain": {
+   "fixed": 63.32,
+   "oracle": 57.62,
+   "blind": 57.8,
+   "monitor": 59.61
+  },
+  "night": {
+   "fixed": 63.32,
+   "oracle": 57.62,
+   "blind": 57.62,
+   "monitor": 57.62
+  },
+  "rain": {
+   "fixed": 63.32,
+   "oracle": 57.62,
+   "blind": 57.9,
+   "monitor": 63.32
+  },
+  "rain_W_only": {
+   "fixed": 63.32,
+   "oracle": 57.62,
+   "blind": 57.86,
+   "monitor": 63.32
+  }
+ },
+ "worst_case_s": {
+  "fixed": 63.31700167842,
+  "oracle": 57.618200851397816,
+  "blind": 57.904381612093744,
+  "monitor": 63.31700167842
+ },
+ "fallback_frac": {
+  "blackout": 0.909,
+  "blackout_W_only": 0.909,
+  "clear": 0.0,
+  "dirt": 0.182,
+  "dirt_W_only": 0.064,
+  "fog": 0.0,
+  "glare": 0.909,
+  "glare_W_only": 0.909,
+  "intermittent_rain": 0.305,
+  "night": 0.0,
+  "rain": 0.909,
+  "rain_W_only": 0.909
+ },
+ "seeds": 4
+}

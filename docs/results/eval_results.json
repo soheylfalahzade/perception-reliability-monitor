@@ -1,0 +1,387 @@
+{
+ "report": {
+  "quality_only": {
+   "auc": 0.8734470510640568,
+   "ece": 0.07038797400943599,
+   "cols": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6
+   ]
+  },
+  "health_only": {
+   "auc": 0.9010020609071899,
+   "ece": 0.07768213766066835,
+   "cols": [
+    7,
+    8,
+    9
+   ]
+  },
+  "combined": {
+   "auc": 0.9382463384880981,
+   "ece": 0.048732813152525124,
+   "cols": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9
+   ]
+  }
+ },
+ "per_condition_auc_combined": {
+  "clear": {
+   "auc": 0.9282407407407407,
+   "reliable_frac": 0.76
+  },
+  "night": {
+   "auc": 0.8402145139205842,
+   "reliable_frac": 0.9163529903805939
+  },
+  "rain": {
+   "auc": 0.9837492340141011,
+   "reliable_frac": 0.4676948728636932
+  },
+  "fog": {
+   "auc": 0.8805748992093827,
+   "reliable_frac": 0.8878699458107545
+  },
+  "glare": {
+   "auc": 0.8212266134118141,
+   "reliable_frac": 0.11175979983319433
+  },
+  "dirt": {
+   "auc": 0.8289768806073153,
+   "reliable_frac": 0.7156439066551427
+  },
+  "blackout": {
+   "auc": 0.9548819336053379,
+   "reliable_frac": 0.6475
+  }
+ },
+ "setting_stats": {
+  "clear@0.0": {
+   "recall": 0.4617398894384638,
+   "precision": 0.5461114934618032
+  },
+  "night@0.25": {
+   "recall": 0.5318578135479544,
+   "precision": 0.5363544132566791
+  },
+  "night@0.5": {
+   "recall": 0.6838882510524301,
+   "precision": 0.5870565045992115
+  },
+  "night@0.75": {
+   "recall": 0.6223404255319149,
+   "precision": 0.5925925925925926
+  },
+  "night@1.0": {
+   "recall": 0.5395655546935609,
+   "precision": 0.4378344350015738
+  },
+  "rain@0.25": {
+   "recall": 0.4787965616045845,
+   "precision": 0.5434146341463415
+  },
+  "rain@0.5": {
+   "recall": 0.5496859992611748,
+   "precision": 0.5
+  },
+  "rain@0.75": {
+   "recall": 0.020810107766629504,
+   "precision": 0.05876180482686254
+  },
+  "rain@1.0": {
+   "recall": 0.0057316250842886045,
+   "precision": 0.019585253456221197
+  },
+  "fog@0.25": {
+   "recall": 0.6651937457511896,
+   "precision": 0.6036397285626157
+  },
+  "fog@0.5": {
+   "recall": 0.5931545518701482,
+   "precision": 0.5482713633398565
+  },
+  "fog@0.75": {
+   "recall": 0.745105872952457,
+   "precision": 0.5879571248423707
+  },
+  "fog@1.0": {
+   "recall": 0.46183777312181984,
+   "precision": 0.6103639240506329
+  },
+  "glare@0.25": {
+   "recall": 0.14748649771499792,
+   "precision": 0.19303969548667754
+  },
+  "glare@0.5": {
+   "recall": 0.1421461897356143,
+   "precision": 0.24556689951638905
+  },
+  "glare@0.75": {
+   "recall": 0.058266360505166474,
+   "precision": 0.12047477744807121
+  },
+  "glare@1.0": {
+   "recall": 0.0063066614111154905,
+   "precision": 0.009450679267572357
+  },
+  "dirt@0.25": {
+   "recall": 0.5523598820058997,
+   "precision": 0.5084860828241684
+  },
+  "dirt@0.5": {
+   "recall": 0.5026757046022119,
+   "precision": 0.3265353418308227
+  },
+  "dirt@0.75": {
+   "recall": 0.31896551724137934,
+   "precision": 0.2167048637636873
+  },
+  "dirt@1.0": {
+   "recall": 0.281505728314239,
+   "precision": 0.18953168044077134
+  },
+  "blackout@0.25": {
+   "recall": 0.5968041620215533,
+   "precision": 0.5427509293680297
+  },
+  "blackout@0.5": {
+   "recall": 0.635469774217043,
+   "precision": 0.5840026773761714
+  },
+  "blackout@0.75": {
+   "recall": 0.5228519195612431,
+   "precision": 0.5528350515463918
+  },
+  "blackout@1.0": {
+   "recall": 0.04371217215870881,
+   "precision": 0.10603588907014681
+  }
+ },
+ "feature_names": [
+  "log_brightness",
+  "log_contrast",
+  "log_sharpness",
+  "log_noise",
+  "saturated_frac",
+  "log_dynamic_range",
+  "obstruction_frac",
+  "mean_score",
+  "count_ratio",
+  "fragmentation"
+ ],
+ "reliable_recall_threshold": 0.2952380952380952,
+ "clear_recall_calibration": 0.49206349206349204,
+ "n_test_frames": 14901,
+ "reliable_frac": 0.6292866250587209,
+ "combined_weights": [
+  3.420353934066705,
+  2.6531648833206387,
+  -3.5728950865040483,
+  3.5647681939862506,
+  -0.9364876948700968,
+  -4.078945637267988,
+  -0.01066829547841553,
+  0.8923866019173393,
+  1.9435035002842385,
+  1.3787458629302891,
+  -0.2052122017525192
+ ],
+ "combined_mean": [
+  -0.28462904168955855,
+  -0.22349823316279116,
+  -0.6005545247566807,
+  -0.4923784042960454,
+  0.030553868570920094,
+  -0.19368180937901552,
+  0.462443272824346,
+  0.870150612540892,
+  0.8107391970790347,
+  0.01911034242426186
+ ],
+ "combined_scale": [
+  1.015705625342942,
+  0.8695848331838305,
+  1.1375130203657224,
+  0.7917160127690775,
+  0.10019536716648456,
+  0.807062089181333,
+  0.3765006208576219,
+  0.13437945378137553,
+  0.30294277030152866,
+  0.03272288636443191
+ ],
+ "segments": [
+  {
+   "condition": "night",
+   "severity": 0.5
+  },
+  {
+   "condition": "night",
+   "severity": 0.75
+  },
+  {
+   "condition": "rain",
+   "severity": 0.5
+  },
+  {
+   "condition": "rain",
+   "severity": 0.75
+  },
+  {
+   "condition": "fog",
+   "severity": 0.5
+  },
+  {
+   "condition": "fog",
+   "severity": 0.75
+  },
+  {
+   "condition": "glare",
+   "severity": 0.5
+  },
+  {
+   "condition": "glare",
+   "severity": 0.75
+  },
+  {
+   "condition": "dirt",
+   "severity": 0.5
+  },
+  {
+   "condition": "dirt",
+   "severity": 0.75
+  },
+  {
+   "condition": "blackout",
+   "severity": 0.5
+  },
+  {
+   "condition": "blackout",
+   "severity": 0.75
+  },
+  {
+   "condition": "blackout",
+   "severity": 1.0
+  }
+ ],
+ "stream_summary": [
+  {
+   "condition": "night",
+   "severity": 0.5,
+   "fallback_frac_bad": 0.0,
+   "normal_frac_bad": 1.0,
+   "fallback_frac_clear": 0.0,
+   "delay_s": null
+  },
+  {
+   "condition": "night",
+   "severity": 0.75,
+   "fallback_frac_bad": 0.0,
+   "normal_frac_bad": 1.0,
+   "fallback_frac_clear": 0.0,
+   "delay_s": null
+  },
+  {
+   "condition": "rain",
+   "severity": 0.5,
+   "fallback_frac_bad": 0.51,
+   "normal_frac_bad": 0.12,
+   "fallback_frac_clear": 0.0,
+   "delay_s": 3.3
+  },
+  {
+   "condition": "rain",
+   "severity": 0.75,
+   "fallback_frac_bad": 0.79,
+   "normal_frac_bad": 0.19,
+   "fallback_frac_clear": 0.11,
+   "delay_s": 3.3
+  },
+  {
+   "condition": "fog",
+   "severity": 0.5,
+   "fallback_frac_bad": 0.0,
+   "normal_frac_bad": 1.0,
+   "fallback_frac_clear": 0.0,
+   "delay_s": null
+  },
+  {
+   "condition": "fog",
+   "severity": 0.75,
+   "fallback_frac_bad": 0.0,
+   "normal_frac_bad": 0.73,
+   "fallback_frac_clear": 0.0,
+   "delay_s": null
+  },
+  {
+   "condition": "glare",
+   "severity": 0.5,
+   "fallback_frac_bad": 0.78,
+   "normal_frac_bad": 0.17,
+   "fallback_frac_clear": 0.01,
+   "delay_s": 3.6
+  },
+  {
+   "condition": "glare",
+   "severity": 0.75,
+   "fallback_frac_bad": 0.77,
+   "normal_frac_bad": 0.19,
+   "fallback_frac_clear": 0.05,
+   "delay_s": 3.7
+  },
+  {
+   "condition": "dirt",
+   "severity": 0.5,
+   "fallback_frac_bad": 0.0,
+   "normal_frac_bad": 1.0,
+   "fallback_frac_clear": 0.0,
+   "delay_s": null
+  },
+  {
+   "condition": "dirt",
+   "severity": 0.75,
+   "fallback_frac_bad": 0.49,
+   "normal_frac_bad": 0.23,
+   "fallback_frac_clear": 0.17,
+   "delay_s": 8.1
+  },
+  {
+   "condition": "blackout",
+   "severity": 0.5,
+   "fallback_frac_bad": 0.0,
+   "normal_frac_bad": 1.0,
+   "fallback_frac_clear": 0.0,
+   "delay_s": null
+  },
+  {
+   "condition": "blackout",
+   "severity": 0.75,
+   "fallback_frac_bad": 0.0,
+   "normal_frac_bad": 1.0,
+   "fallback_frac_clear": 0.0,
+   "delay_s": null
+  },
+  {
+   "condition": "blackout",
+   "severity": 1.0,
+   "fallback_frac_bad": 0.73,
+   "normal_frac_bad": 0.21,
+   "fallback_frac_clear": 0.34,
+   "delay_s": 4.3
+  }
+ ]
+}
