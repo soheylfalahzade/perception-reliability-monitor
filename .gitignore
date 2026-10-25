@@ -7,7 +7,7 @@ __pycache__/
 .mypy_cache/
 build/
 dist/
-results/
+/results/
 *.mp4
 *.pt
 .DS_Store
