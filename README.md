@@ -1,5 +1,9 @@
 # perception-reliability-monitor
 
+<!-- banner -->
+<p align="center"><img src="docs/assets/banner.svg" alt="perception-reliability-monitor" width="860"></p>
+
+
 **Ground-truth-free reliability monitoring and graceful degradation for camera-based traffic
 perception.**
 
