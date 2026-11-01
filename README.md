@@ -204,6 +204,18 @@ See [`CITATION.cff`](CITATION.cff).
 - Monitor thresholds and dwell times were set a priori and not tuned for false-fallback rate.
 - The scene has a single camera geometry.
 
+## Calibrating the fallback threshold
+
+The thresholds in `MonitorConfig` were set a priori. To fix the false-fallback rate on healthy footage instead,
+record feature streams in good conditions and let the monitor pick the most sensitive threshold that stays
+under a target:
+
+```python
+from relmon.monitor import calibrate_fallback_threshold, fallback_rate
+cfg = calibrate_fallback_threshold(model, healthy_streams, target=0.01)   # <= 1 % of healthy frames in FALLBACK
+print(cfg.fallback_below, fallback_rate(model, cfg, healthy_streams))
+```
+
 ## Roadmap
 
 Real adverse-weather footage (e.g. public night/rain subsets) with a modern detector; a controller

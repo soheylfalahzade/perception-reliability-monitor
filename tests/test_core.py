@@ -101,3 +101,20 @@ def test_reliability_model_separates_and_monitor_hysteresis():
     rec = [mon.update(np.zeros(3))[1] for _ in range(120)]
     assert rec[-1] == Mode.NORMAL
     assert Mode.NORMAL not in rec[:15]           # cautious return
+
+
+def test_calibrated_threshold_respects_false_fallback_target():
+    import numpy as np
+
+    from relmon.monitor import ReliabilityModel, calibrate_fallback_threshold, fallback_rate
+
+    rng = np.random.default_rng(0)
+    x = np.vstack([rng.normal(1.0, 0.6, (400, 2)), rng.normal(-1.0, 0.6, (400, 2))])
+    y = np.r_[np.ones(400), np.zeros(400)]
+    model = ReliabilityModel().fit(x, y)
+    healthy = [rng.normal(1.0, 0.9, (300, 2)) for _ in range(6)]
+    cfg = calibrate_fallback_threshold(model, healthy, target=0.02)
+    assert fallback_rate(model, cfg, healthy) <= 0.02
+    assert cfg.fallback_below < cfg.recover_above < cfg.degraded_below
+    strict = calibrate_fallback_threshold(model, healthy, target=0.0)
+    assert strict.fallback_below <= cfg.fallback_below

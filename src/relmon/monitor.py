@@ -92,3 +92,43 @@ class ReliabilityMonitor:
         elif self.mode == Mode.FALLBACK and self.r >= c.fallback_below and self._below_deg == 0:
             self.mode = Mode.DEGRADED
         return self.r, self.mode
+
+
+def fallback_rate(model: ReliabilityModel, cfg: MonitorConfig,
+                  streams: list[np.ndarray]) -> float:
+    """Fraction of frames spent in FALLBACK over feature streams (each ``(frames, features)``)."""
+    n = hit = 0
+    for feats in streams:
+        mon = ReliabilityMonitor(model, cfg)
+        for x in feats:
+            _, mode = mon.update(x)
+            hit += int(mode == Mode.FALLBACK)
+            n += 1
+    return hit / max(n, 1)
+
+
+THRESHOLD_GRID: tuple[float, ...] = tuple(round(0.05 * k, 2) for k in range(1, 15))
+
+
+def calibrate_fallback_threshold(model: ReliabilityModel, healthy_streams: list[np.ndarray],
+                                 target: float = 0.01, base: MonitorConfig | None = None,
+                                 grid: tuple[float, ...] = THRESHOLD_GRID) -> MonitorConfig:
+    """Most sensitive ``fallback_below`` whose false-fallback rate on healthy streams is <= target.
+
+    ``healthy_streams`` are feature streams recorded in good conditions. The returned config keeps
+    all other settings of ``base``; the degraded/recover thresholds are moved up with the
+    fallback threshold so that the ordering fallback < recover < degraded is preserved.
+    """
+    from dataclasses import replace
+
+    base = base or MonitorConfig()
+    best = replace(base, fallback_below=float(grid[0]))
+    for thr in grid:
+        cand = replace(base, fallback_below=float(thr),
+                       recover_above=max(base.recover_above, float(thr) + 0.1),
+                       degraded_below=max(base.degraded_below, float(thr) + 0.2))
+        if fallback_rate(model, cand, healthy_streams) <= target:
+            best = cand
+        else:
+            break
+    return best
