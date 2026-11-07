@@ -86,55 +86,74 @@ Labels are used only for training and evaluation, never at run time.
 
 **Protocol.** Models are trained on 3 development seeds (1000+) and evaluated on 6 disjoint test
 seeds (14,901 frames, 63% reliable). Streams for the mode analysis are continuous (clear 20 s, bad
-16 s, clear 20 s) so that health and obstruction state persist.
+16 s, clear 20 s) so that health and obstruction state persist, and every setting is replicated on
+independent streams (`--stream-reps`).
 
 ## Results (synthetic images)
 
 **What the reference detector does under each condition** (recall / precision over test clips):
 
+<!-- BEGIN:detector -->
 | condition | 0.25 | 0.5 | 0.75 | 1.0 |
-|---|---|---|---|---|
-| clear | 0.46 / 0.55 | | | |
+| --- | --- | --- | --- | --- |
+| clear | 0.46 / 0.55 |  |  |  |
 | night | 0.53 / 0.54 | 0.68 / 0.59 | 0.62 / 0.59 | 0.54 / 0.44 |
 | rain | 0.48 / 0.54 | 0.55 / 0.50 | 0.02 / 0.06 | 0.01 / 0.02 |
 | fog | 0.67 / 0.60 | 0.59 / 0.55 | 0.75 / 0.59 | 0.46 / 0.61 |
 | glare | 0.15 / 0.19 | 0.14 / 0.25 | 0.06 / 0.12 | 0.01 / 0.01 |
 | dirt | 0.55 / 0.51 | 0.50 / 0.33 | 0.32 / 0.22 | 0.28 / 0.19 |
 | blackout | 0.60 / 0.54 | 0.64 / 0.58 | 0.52 / 0.55 | 0.04 / 0.11 |
+<!-- END:detector -->
 
 Night, fog and moderate blackout do not hurt this detector (it normalises each frame
 photometrically); rain, glare, dirt and a full outage do.
 
 **Frame-level reliability prediction** (held-out):
 
-| features | AUC | ECE |
-|---|---|---|
-| image quality only | 0.873 | 0.070 |
-| detector health only | 0.901 | 0.078 |
-| **combined** | **0.938** | **0.049** |
+<!-- BEGIN:frame_level -->
+| features | AUC (95% interval) | ECE (95% interval) |
+| --- | --- | --- |
+| image quality only | 0.873 (0.824 to 0.914) | 0.070 (0.054 to 0.111) |
+| detector health only | 0.901 (0.865 to 0.935) | 0.078 (0.052 to 0.114) |
+| **combined** | 0.938 (0.911 to 0.962) | 0.049 (0.033 to 0.084) |
 
-Per-condition AUC of the combined model: clear 0.93, night 0.84, rain 0.98, fog 0.88, glare 0.82,
-dirt 0.83, blackout 0.96.
+Intervals resample whole clips (150 test clips, 1000 resamples), because the frames of one clip are strongly dependent. Paired AUC difference on the same resampled clips:
 
-**Mode behaviour on continuous streams** (fraction of the bad segment, and of the clear segments
-after a 8 s warm-up, spent in FALLBACK; delay = time from onset to first FALLBACK):
+- combined minus quality only: +0.065 (+0.036 to +0.098)
+- combined minus health only: +0.037 (+0.008 to +0.065)
 
-| stream | FALLBACK in bad | NORMAL in bad | FALLBACK in clear | delay |
-|---|---|---|---|---|
-| rain 0.5 | 0.51 | 0.12 | 0.00 | 3.3 s |
-| rain 0.75 | 0.79 | 0.19 | 0.11 | 3.3 s |
-| glare 0.5 | 0.78 | 0.17 | 0.01 | 3.6 s |
-| glare 0.75 | 0.77 | 0.19 | 0.05 | 3.7 s |
-| dirt 0.75 | 0.49 | 0.23 | 0.17 | 8.1 s |
-| blackout 1.0 (outage) | 0.73 | 0.21 | 0.34 | 4.3 s |
-| night 0.75, fog 0.5, blackout 0.75 | 0.00 | 1.00 | 0.00 | none |
+Per-condition AUC of the combined model: clear 0.93, night 0.84, rain 0.98, fog 0.88, glare 0.82, dirt 0.83, blackout 0.95.
+<!-- END:frame_level -->
+
+**Mode behaviour on continuous streams** (clear 20 s, bad 16 s, clear 20 s, replicated):
+
+<!-- BEGIN:streams -->
+| stream | detector | FALLBACK in bad | NORMAL in bad (mean) | FALLBACK in clear | in clear, after recovery | reacted | delay [s] | carry-over |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| night 0.5 | copes | 0.00 (0.00 to 0.00) | 0.87 | 0.03 (0.01 to 0.06) | 0.04 (0.00 to 0.08) | 0.00 | - | 0.05 |
+| night 0.75 | copes | 0.00 (0.00 to 0.00) | 0.89 | 0.05 (0.01 to 0.10) | 0.04 (0.01 to 0.08) | 0.00 | - | 0.00 |
+| rain 0.5 | copes | 0.46 (0.32 to 0.60) | 0.20 | 0.11 (0.06 to 0.18) | 0.06 (0.02 to 0.11) | 0.70 | 6.7 (5.0 to 8.7) | 0.10 |
+| rain 0.75 | fails | 0.80 (0.79 to 0.81) | 0.14 | 0.14 (0.10 to 0.21) | 0.03 (0.00 to 0.09) | 1.00 | 3.2 (3.0 to 3.4) | 0.00 |
+| fog 0.5 | copes | 0.00 (0.00 to 0.00) | 0.96 | 0.02 (0.00 to 0.05) | 0.01 (0.00 to 0.03) | 0.00 | - | 0.00 |
+| fog 0.75 | copes | 0.00 (0.00 to 0.01) | 0.87 | 0.05 (0.01 to 0.10) | 0.05 (0.01 to 0.10) | 0.00 | - | 0.10 |
+| glare 0.5 | fails | 0.53 (0.47 to 0.59) | 0.27 | 0.16 (0.11 to 0.21) | 0.05 (0.00 to 0.10) | 1.00 | 7.3 (6.3 to 8.2) | 0.00 |
+| glare 0.75 | fails | 0.66 (0.60 to 0.72) | 0.21 | 0.21 (0.15 to 0.27) | 0.06 (0.01 to 0.11) | 0.95 | 5.8 (4.9 to 6.7) | 0.05 |
+| dirt 0.5 | copes | 0.04 (0.00 to 0.09) | 0.74 | 0.03 (0.00 to 0.07) | 0.03 (0.00 to 0.07) | 0.10 | 4.9 (2.7 to 7.1) | 0.00 |
+| dirt 0.75 | copes | 0.20 (0.09 to 0.33) | 0.44 | 0.08 (0.02 to 0.15) | 0.04 (0.00 to 0.11) | 0.50 | 9.5 (6.8 to 12.0) | 0.00 |
+| blackout 0.5 | copes | 0.03 (0.00 to 0.07) | 0.70 | 0.03 (0.01 to 0.06) | 0.01 (0.00 to 0.03) | 0.15 | 2.8 (0.5 to 6.5) | 0.00 |
+| blackout 0.75 | copes | 0.00 (0.00 to 0.01) | 0.90 | 0.02 (0.00 to 0.05) | 0.02 (0.00 to 0.05) | 0.00 | - | 0.10 |
+| blackout 1 | fails | 0.78 (0.74 to 0.82) | 0.17 | 0.18 (0.13 to 0.23) | 0.04 (0.02 to 0.08) | 0.85 | 4.2 (3.9 to 4.5) | 0.15 |
+
+Mean over 20 replicate streams per setting, with 95% bootstrap intervals over replicates. *FALLBACK in clear* counts the first clear segment after an 8 s warm-up and the whole second one, so slow recovery counts as false fallback; *after recovery* applies the warm-up to both. *Reacted* is the share of replicates in which the monitor entered FALLBACK during the bad segment without having been in FALLBACK just before it; *carry-over* is the share that entered the bad segment already in FALLBACK. The delay is measured from the onset over replicates that reacted. *detector* marks whether the detector's relative recall in that setting is below the reliability threshold.
+<!-- END:streams -->
 
 ![streams](docs/results/monitor_streams.png)
 
-The monitor reacts within 3-8 s when the detector actually fails and stays quiet when the detector
-copes (night, mild fog). It also produces false fallbacks after a bad episode (up to 0.34 of the
-following clear segment after an outage), because detector-health windows and the obstruction
-average recover slowly.
+Rows marked *fails* are the settings where the detector's relative recall is below the reliability
+threshold; rows marked *copes* with a non-zero *reacted* share are reactions to degradations that the
+detector tolerates, that is, false alarms in terms of detector failure. Fallbacks after a bad episode
+are false fallbacks as well, because detector-health windows and the obstruction average recover
+slowly.
 
 ## Closed-loop study in SUMO
 
@@ -169,11 +188,16 @@ detector-triggered actuation would be more exposed; testing them is future work.
 
 ## Claims and evidence
 
+<!-- BEGIN:claims_monitor -->
+| claim | evidence | file |
+| --- | --- | --- |
+| Image quality and detector health jointly predict reliability | **supported**: AUC 0.938 (combined) vs 0.873 (quality) and 0.901 (health); the smallest paired difference is +0.037 (+0.008 to +0.065) | `docs/results/eval_results.json` |
+| The monitor reacts when the detector fails | **partially supported**: in the 4 streams where the detector fails the monitor reacted in 85% to 100% of replicates, with a mean delay of 3.2 to 7.3 s; reaction elsewhere is in the stream table | `docs/results/eval_results.json` |
+| The monitor limits false fallbacks | **partially supported**: up to 0.21 of clear frames in FALLBACK, counting the recovery after the bad episode (glare 0.75); after the recovery up to 0.06 (rain 0.5) | `docs/results/eval_results.json` |
+<!-- END:claims_monitor -->
+
 | claim | evidence | file |
 |---|---|---|
-| Image quality and detector health jointly predict reliability | AUC 0.938 (combined) vs 0.873 (quality) and 0.901 (health); ECE 0.049 | `docs/results/eval_results.json` |
-| The monitor reacts when the detector fails | FALLBACK within 3-8 s for rain, glare and outage; stays NORMAL for night and mild fog | `docs/results/eval_results.json` |
-| The monitor limits false fallbacks | **partially supported**: 0-0.17 of clear frames, up to 0.34 after an outage | `docs/results/eval_results.json` |
 | Monitoring improves closed-loop control | **not supported**: blind control is within 0.3 s of oracle; fallback costs about 5.7 s | `docs/results/sumo_summary.json` |
 
 ## Threats to validity
@@ -181,7 +205,7 @@ detector-triggered actuation would be more exposed; testing them is future work.
 - *Construct*: images are synthetic and the reference detector is a simple classical method; deep detectors fail differently.
 - *Internal*: the reliable label depends on a relative threshold (0.6 x clear recall); monitor thresholds and dwell times were not tuned.
 - *External*: one scene geometry; closed-loop camera behaviour resamples measured frame statistics independently in time.
-- *Statistical*: 6 test seeds for frame-level metrics and 4 for the closed loop; no intervals are reported for the mode statistics.
+- *Statistical*: 6 test seeds for frame-level metrics, with intervals that resample whole clips, and 4 seeds for the closed loop, without intervals; the mode statistics use replicate streams with intervals over replicates. Replicates of one setting share the scene and the trained model, so their intervals do not cover the variation between trained models.
 
 ## Data and code availability
 

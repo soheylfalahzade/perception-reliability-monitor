@@ -4,7 +4,7 @@ Development seeds are `1000+`, reported seeds `0-5` (frames) and `0-3` (closed l
 
 | result | command | approx. time |
 |---|---|---|
-| detector behaviour, reliability metrics, mode streams (`docs/results/eval_results.json`) | `relmon-eval --dev-seeds 3 --test-seeds 6 --out results/eval` | 12 min, 1 core |
+| detector behaviour, reliability metrics, mode streams (`docs/results/eval_results.json`) | `relmon-eval --dev-seeds 3 --test-seeds 6 --stream-reps 20 --jobs 8 --out results/eval`, then copy `results/eval/results.json` to `docs/results/eval_results.json` and run `python -m relmon.render_readme` | about 25 min, 8 cores |
 | closed-loop study (`docs/results/sumo_summary.json`) | `relmon-sumo --sumocfg examples/sumo/cross_heavy.sumocfg --severity 1.0 --seeds 4 --jobs 3 --out results/sumo` | 5 min, 3 cores |
 | figure (`docs/results/monitor_streams.png`) | `python -c "from relmon.plots import plot_streams; plot_streams('results/eval/results.json', 'docs/results/monitor_streams.png')"` | seconds |
 | animation (`docs/assets/monitor.gif`) | `relmon-gif --out docs/assets/monitor.gif --results docs/results/eval_results.json` | 1 min |
